@@ -1,5 +1,10 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('node:path')
+const fs = require('fs')
+
+function writeFile(_, data){
+    fs.writeFileSync('D:/hello.txt', data)
+}
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -10,10 +15,12 @@ const createWindow = () => {
         }
     })
 
+    ipcMain.on('file-save', writeFile)
     win.loadFile('index.html')
 }
 
 app.whenReady().then(() => {
+    console.log('aaaaaa')
     createWindow()
 
     app.on('activate', () => {
